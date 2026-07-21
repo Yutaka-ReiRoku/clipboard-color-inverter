@@ -1,0 +1,18 @@
+{
+  "name": "Clipboard Color Inverter",
+  "short_name": "ClipInverter",
+  "description": "Read images from system clipboard, invert colors, checkerboard grid, scatter shapes & auto-replace into system clipboard.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#6366f1",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
