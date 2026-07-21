@@ -52,6 +52,38 @@
         </button>
       </div>
 
+      <!-- Main Primary Action Group (Top Prominent Placement) -->
+      <div class="main-action-group">
+        <!-- Process & Save to Clipboard Button (Largest Primary Button) -->
+        <button id="process-btn" class="glow-button primary-top-button" title="Click to fetch image, invert colors, and save to system Clipboard">
+          <div class="btn-content">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+              <circle cx="12" cy="13" r="4"/>
+              <path d="M12 9a4 4 0 0 1 0 8z" fill="currentColor"/>
+            </svg>
+            <span id="btn-text">📋 INVERT & SAVE</span>
+          </div>
+          <div class="btn-shimmer"></div>
+        </button>
+
+        <!-- Preview Only Button -->
+        <button id="preview-btn" class="sec-action-button" title="Click to preview processed effect without overwriting system Clipboard">
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <span>👁️ PREVIEW ONLY</span>
+        </button>
+      </div>
+
+      <!-- Status Indicator -->
+      <div id="status-box" class="status-box idle">
+        <span id="status-icon" class="status-icon">💡</span>
+        <span id="status-message">Click buttons above or press Ctrl+V to load clipboard image</span>
+      </div>
+
       <!-- Control Group: Blur Mode -->
       <div id="blur-controls" class="slider-control-group">
         <div class="slider-header">
@@ -212,38 +244,6 @@
           <span class="toggle-text-label">🔄 Invert Colors Inside Vector Shapes</span>
         </div>
 
-        <p class="mode-desc-note">💡 Shapes are organically scattered across the image (Background remains 100% sharp original).</p>
-      </div>
-
-      <div class="main-action-group">
-        <!-- Preview Only Button (Does NOT modify clipboard) -->
-        <button id="preview-btn" class="sec-action-button" title="Click to preview processed effect without overwriting system Clipboard">
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-          <span>👁️ PREVIEW ONLY</span>
-        </button>
-
-        <!-- Process & Save to Clipboard Button -->
-        <button id="process-btn" class="glow-button" title="Click to fetch image, invert colors, and save to system Clipboard">
-          <div class="btn-content">
-            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
-              <circle cx="12" cy="13" r="4"/>
-              <path d="M12 9a4 4 0 0 1 0 8z" fill="currentColor"/>
-            </svg>
-            <span id="btn-text">📋 INVERT & SAVE</span>
-          </div>
-          <div class="btn-shimmer"></div>
-        </button>
-      </div>
-
-      <!-- Status Indicator -->
-      <div id="status-box" class="status-box idle">
-        <span id="status-icon" class="status-icon">💡</span>
-        <span id="status-message">Click buttons above or press Ctrl+V to load clipboard image</span>
       </div>
     </section>
 
