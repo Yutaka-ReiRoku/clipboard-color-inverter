@@ -372,8 +372,8 @@ function initApp() {
     ctx.restore();
   }
 
-  // Toast Notification Helper
-  function showToast(message, duration = 3000) {
+  // Toast Notification Helper (Auto-fade & auto-remove)
+  function showToast(message, duration = 2500) {
     if (!toastContainer) return;
     const toast = document.createElement('div');
     toast.className = 'toast';
@@ -382,7 +382,11 @@ function initApp() {
 
     setTimeout(() => {
       toast.classList.add('hide');
-      toast.addEventListener('transitionend', () => toast.remove());
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 320);
     }, duration);
   }
 

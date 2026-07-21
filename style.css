@@ -827,6 +827,12 @@ input:checked + .switch-slider:before {
   font-weight: 600;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
   animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.hide {
+  opacity: 0;
+  transform: translateY(15px) scale(0.95);
 }
 
 @keyframes toastIn {
