@@ -245,62 +245,49 @@ function initApp() {
       }
       const activeInvertCaro = caroInvertToggle ? caroInvertToggle.checked : true;
 
-      // 1. Capture 100% sharp original image pixels
-      const offCanvasOrig = document.createElement('canvas');
-      offCanvasOrig.width = width;
-      offCanvasOrig.height = height;
-      const offCtxOrig = offCanvasOrig.getContext('2d');
-      offCtxOrig.drawImage(img, 0, 0, width, height);
-      const origPixels = offCtxOrig.getImageData(0, 0, width, height).data;
+      // 1. Draw 100% sharp original image to processCanvas
+      ctx.drawImage(img, 0, 0, width, height);
 
-      // 2. Render blurred image if caroBlurPx > 0
-      let blurPixels = origPixels;
+      // 2. Prepare inverted/blurred layer on offscreen canvas
+      const offCanvasInv = document.createElement('canvas');
+      offCanvasInv.width = width;
+      offCanvasInv.height = height;
+      const offCtxInv = offCanvasInv.getContext('2d');
+
       if (caroBlurPx > 0) {
-        const offCanvasBlur = document.createElement('canvas');
-        offCanvasBlur.width = width;
-        offCanvasBlur.height = height;
-        const offCtxBlur = offCanvasBlur.getContext('2d');
-        offCtxBlur.filter = `blur(${caroBlurPx}px)`;
-        offCtxBlur.drawImage(img, 0, 0, width, height);
-        blurPixels = offCtxBlur.getImageData(0, 0, width, height).data;
+        offCtxInv.filter = `blur(${caroBlurPx}px)`;
+      }
+      offCtxInv.drawImage(img, 0, 0, width, height);
+
+      if (activeInvertCaro) {
+        // Fast 1D linear array inversion (Zero division/floor/modulo math overhead)
+        const invImgData = offCtxInv.getImageData(0, 0, width, height);
+        const d = invImgData.data;
+        const len = d.length;
+        for (let i = 0; i < len; i += 4) {
+          d[i]     = 255 - d[i];
+          d[i + 1] = 255 - d[i + 1];
+          d[i + 2] = 255 - d[i + 2];
+        }
+        offCtxInv.putImageData(invImgData, 0, 0);
       }
 
-      // 3. Composite output image: Original tiles 100% untouched, Alternating tiles (Blurred & Optional Color Invert)
-      const outputImageData = ctx.createImageData(width, height);
-      const outData = outputImageData.data;
-
+      // 3. GPU-Accelerated tile compositing using native drawImage sub-rectangles
       const tileW = width / gridCols;
       const tileH = height / gridRows;
 
-      for (let y = 0; y < height; y++) {
-        const row = Math.floor(y / tileH);
-        for (let x = 0; x < width; x++) {
-          const col = Math.floor(x / tileW);
-          const index = (y * width + x) * 4;
-
-          const isOriginal = (gridCols === 1 && gridRows === 1) ? false : ((row + col) % 2 === 0);
-
-          if (isOriginal) {
-            outData[index]     = origPixels[index];
-            outData[index + 1] = origPixels[index + 1];
-            outData[index + 2] = origPixels[index + 2];
-            outData[index + 3] = origPixels[index + 3];
-          } else {
-            if (activeInvertCaro) {
-              outData[index]     = 255 - blurPixels[index];
-              outData[index + 1] = 255 - blurPixels[index + 1];
-              outData[index + 2] = 255 - blurPixels[index + 2];
-            } else {
-              outData[index]     = blurPixels[index];
-              outData[index + 1] = blurPixels[index + 1];
-              outData[index + 2] = blurPixels[index + 2];
-            }
-            outData[index + 3] = blurPixels[index + 3];
+      for (let r = 0; r < gridRows; r++) {
+        for (let c = 0; c < gridCols; c++) {
+          const isOriginal = (gridCols === 1 && gridRows === 1) ? false : ((r + c) % 2 === 0);
+          if (!isOriginal) {
+            const x = Math.round(c * tileW);
+            const y = Math.round(r * tileH);
+            const w = Math.round((c + 1) * tileW) - x;
+            const h = Math.round((r + 1) * tileH) - y;
+            ctx.drawImage(offCanvasInv, x, y, w, h, x, y, w, h);
           }
         }
       }
-
-      ctx.putImageData(outputImageData, 0, 0);
 
       // 4. Convert Canvas back to PNG Blob
       const invertedBlob = await new Promise(resolve => {
