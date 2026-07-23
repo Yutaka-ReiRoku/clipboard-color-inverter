@@ -6,7 +6,7 @@
   <title>Clipboard Image Color Inverter</title>
   
   <!-- SEO & PWA Meta Tags -->
-  <meta name="description" content="Free Client-Side Web Application to read clipboard images, invert colors, generate checkerboard grid patterns or organic vector shape masks, and auto-replace back to system clipboard.">
+  <meta name="description" content="Free Client-Side Web Application to read clipboard images, invert colors with checkerboard grid patterns, and auto-replace back to system clipboard.">
   <meta name="theme-color" content="#6366f1">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -34,27 +34,14 @@
         <span class="pulse-dot"></span> Offline Ready
       </div>
       <h1 class="app-title">Clipboard Color Inverter</h1>
-      <p class="app-subtitle">Read Clipboard Image &bull; Invert Colors &bull; Auto Replace System Clipboard</p>
+      <p class="app-subtitle">Read Clipboard Image &bull; Checkerboard Grid Invert &bull; Auto Replace System Clipboard</p>
     </header>
 
     <!-- Main Action Area -->
     <section class="action-card">
-      <!-- Mode Selection Tabs -->
-      <div class="mode-tabs">
-        <button type="button" id="tab-blur" class="mode-tab active" data-mode="blur">
-          <span>✨ Blur & Invert</span>
-        </button>
-        <button type="button" id="tab-caro" class="mode-tab" data-mode="caro">
-          <span>🏁 Checkerboard Grid</span>
-        </button>
-        <button type="button" id="tab-shapes" class="mode-tab" data-mode="shapes">
-          <span>🎨 Scatter Shapes</span>
-        </button>
-      </div>
-
-      <!-- Main Primary Action Group (Top Prominent Placement) -->
+      <!-- Main Primary Action Group -->
       <div class="main-action-group">
-        <!-- Process & Save to Clipboard Button (Largest Primary Button) -->
+        <!-- Process & Save to Clipboard Button -->
         <button id="process-btn" class="glow-button primary-top-button" title="Click to fetch image, invert colors, and save to system Clipboard">
           <div class="btn-content">
             <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -84,41 +71,8 @@
         <span id="status-message">Click buttons above or press Ctrl+V to load clipboard image</span>
       </div>
 
-      <!-- Control Group: Blur Mode -->
-      <div id="blur-controls" class="slider-control-group">
-        <div class="slider-header">
-          <label for="blur-slider" class="slider-label">
-            <svg class="slider-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-            Blur Radius Level:
-          </label>
-          <span id="blur-val-display" class="slider-value-badge">0 px (Original)</span>
-        </div>
-        <input type="range" id="blur-slider" min="0" max="100" value="0" step="1" class="custom-slider">
-        
-        <!-- Invert Colors Toggle Option -->
-        <div class="toggle-row">
-          <label class="switch-container">
-            <input type="checkbox" id="invert-color-toggle" checked>
-            <span class="switch-slider"></span>
-          </label>
-          <span class="toggle-text-label">🔄 Invert Color Scheme</span>
-        </div>
-
-        <!-- Preserve Text Toggle Option -->
-        <div class="toggle-row">
-          <label class="switch-container">
-            <input type="checkbox" id="preserve-text-toggle" checked>
-            <span class="switch-slider"></span>
-          </label>
-          <span class="toggle-text-label">🛡️ Preserve Manga Text (Smart Edge Contrast Protection)</span>
-        </div>
-      </div>
-
-      <!-- Control Group: Caro Grid Mode (Hidden by default) -->
-      <div id="caro-controls" class="slider-control-group hidden">
+      <!-- Control Group: Checkerboard Grid Controls -->
+      <div id="caro-controls" class="slider-control-group">
         <!-- Caro Grid Cols Slider (Horizontal) -->
         <div class="slider-header">
           <label for="caro-cols-slider" class="slider-label">
@@ -170,80 +124,6 @@
         </div>
 
         <p class="mode-desc-note">💡 Checkerboard: Original tiles remain 100% sharp, alternating tiles apply Color Inversion & optional Blur.</p>
-      </div>
-
-      <!-- Control Group: Scatter Shapes Mode (Hidden by default) -->
-      <div id="shapes-controls" class="slider-control-group hidden">
-        <!-- Shape Type Selector -->
-        <div class="shape-selector-group">
-          <span class="slider-label">Vector Shape Type:</span>
-          <div class="shape-buttons">
-            <button type="button" class="shape-btn active" data-shape="star" title="Star">⭐</button>
-            <button type="button" class="shape-btn" data-shape="circle" title="Circle">⚪</button>
-            <button type="button" class="shape-btn" data-shape="square" title="Square">⬛</button>
-            <button type="button" class="shape-btn" data-shape="diamond" title="Diamond">💎</button>
-            <button type="button" class="shape-btn" data-shape="heart" title="Heart">💖</button>
-          </div>
-        </div>
-
-        <!-- Dual-Thumb Slider: Random Size Min - Max Range -->
-        <div class="dual-range-group">
-          <div class="slider-header" style="margin-top: 8px;">
-            <label class="slider-label">Random Size Range (Min - Max):</label>
-            <span id="shape-size-range-val" class="slider-value-badge">20 px - 80 px</span>
-          </div>
-          <div class="dual-slider-wrapper">
-            <div class="dual-track-bg"></div>
-            <div id="size-track-highlight" class="dual-track-highlight"></div>
-            <input type="range" id="size-min-slider" min="10" max="250" value="20" step="1" class="dual-range-input">
-            <input type="range" id="size-max-slider" min="10" max="250" value="80" step="1" class="dual-range-input">
-          </div>
-        </div>
-
-        <!-- Dual-Thumb Slider: Random Rotation Min - Max Range -->
-        <div class="dual-range-group">
-          <div class="slider-header" style="margin-top: 8px;">
-            <label class="slider-label">Random Rotation Range (Min - Max):</label>
-            <span id="shape-rot-range-val" class="slider-value-badge">0° - 180°</span>
-          </div>
-          <div class="dual-slider-wrapper">
-            <div class="dual-track-bg"></div>
-            <div id="rot-track-highlight" class="dual-track-highlight"></div>
-            <input type="range" id="rot-min-slider" min="0" max="360" value="0" step="1" class="dual-range-input">
-            <input type="range" id="rot-max-slider" min="0" max="360" value="180" step="1" class="dual-range-input">
-          </div>
-        </div>
-
-        <!-- Shape Density Count Slider -->
-        <div class="slider-header" style="margin-top: 6px;">
-          <label for="shape-count-slider" class="slider-label">Total Shapes Density:</label>
-          <span id="shape-count-val" class="slider-value-badge">30 Shapes</span>
-        </div>
-        <input type="range" id="shape-count-slider" min="1" max="200" value="30" step="1" class="custom-slider">
-
-        <!-- Multi-Pass Overlap Iterations Slider -->
-        <div class="slider-header" style="margin-top: 6px;">
-          <label for="shape-passes-slider" class="slider-label">Overlapping Multi-Pass Iterations:</label>
-          <span id="shape-passes-val" class="slider-value-badge">1 Pass</span>
-        </div>
-        <input type="range" id="shape-passes-slider" min="1" max="10" value="1" step="1" class="custom-slider">
-
-        <!-- End-Stage Shape Blur Slider -->
-        <div class="slider-header" style="margin-top: 6px;">
-          <label for="shape-blur-slider" class="slider-label">End-Stage Shape Blur Radius:</label>
-          <span id="shape-blur-val" class="slider-value-badge">0 px (Original)</span>
-        </div>
-        <input type="range" id="shape-blur-slider" min="0" max="100" value="0" step="1" class="custom-slider">
-
-        <!-- Invert Inside Shapes Toggle -->
-        <div class="toggle-row">
-          <label class="switch-container">
-            <input type="checkbox" id="shape-invert-toggle" checked>
-            <span class="switch-slider"></span>
-          </label>
-          <span class="toggle-text-label">🔄 Invert Colors Inside Vector Shapes</span>
-        </div>
-
       </div>
     </section>
 
